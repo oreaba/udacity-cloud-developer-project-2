@@ -3,6 +3,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
 import { Router, Request, Response } from 'express';
+var validUrl = require('valid-url');
 
 (async () => {
 
@@ -34,7 +35,10 @@ import { Router, Request, Response } from 'express';
     let { image_url } = req.query;
 
     if (!image_url) {
-      return res.status(400).send('image_url query is required');
+      return res.status(400).send('Image url is missing');
+    }
+    if(validUrl.isUri(image_url)){
+      return res.status(400).send('Image url is malformed');
     }
     const filteredPath = await filterImageFromURL(image_url);
     return res.sendFile(filteredPath, {}, () => deleteLocalFiles([filteredPath]));    
