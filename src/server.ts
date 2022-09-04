@@ -3,7 +3,6 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
 import { Router, Request, Response } from 'express';
-var validUrl = require('valid-url');
 
 (async () => {
 
@@ -17,6 +16,7 @@ var validUrl = require('valid-url');
   app.use(bodyParser.json());
 
   // @TODO1 IMPLEMENT A RESTFUL ENDPOINT
+
   // GET /filteredimage?image_url={{URL}}
   // endpoint to filter an image from a public url.
   // IT SHOULD
@@ -35,10 +35,7 @@ var validUrl = require('valid-url');
     let { image_url } = req.query;
 
     if (!image_url) {
-      return res.status(400).send('Image url is missing');
-    }
-    if(validUrl.isUri(image_url)){
-      return res.status(400).send('Image url is malformed');
+      return res.status(400).send('image_url query is required');
     }
     const filteredPath = await filterImageFromURL(image_url);
     return res.sendFile(filteredPath, {}, () => deleteLocalFiles([filteredPath]));    
