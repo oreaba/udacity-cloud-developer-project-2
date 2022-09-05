@@ -11,15 +11,12 @@ import Jimp = require("jimp");
 // RETURNS
 //    an absolute path to a filtered image locally saved file
 
+
 export async function filterImageFromURL(inputURL: string): Promise<string> {
   return new Promise(async (resolve, reject) => {
     try {
 
-      // add support for very large image files
-      const JPEG = require('jpeg-js')
-      Jimp.decoders['image/jpeg'] = (data: Buffer) => 
-      JPEG.decode(data, { maxMemoryUsageInMB: 1024 });
-    
+     
       const photo = await Jimp.read(inputURL);
       const outpath =
         "/tmp/filtered." + Math.floor(Math.random() * 2000) + ".jpg";
