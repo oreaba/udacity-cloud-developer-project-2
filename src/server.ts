@@ -38,7 +38,7 @@ import { Router, Request, Response } from 'express';
       return res.status(400).send('image_url query is required');
     }
     const filteredPath = await filterImageFromURL(image_url);
-    return res.sendFile(filteredPath, {}, () => deleteLocalFiles([filteredPath]));    
+    return res.status(200).sendFile(filteredPath, {}, () => deleteLocalFiles([filteredPath]));    
   } );
   //! END @TODO1
   
